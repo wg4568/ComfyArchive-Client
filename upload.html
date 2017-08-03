@@ -68,7 +68,7 @@ function upload() {
 	if (files.length > 0) {
 		var title = $("#name").val();
 		var uploader = $("#uploader").val();
-		var tags = $("#tags").val().replace(/ /g,'').split(",");
+		var tags = $("#tags").val().replace(/ /g,'').toLowerCase().split(",");
 		var img = files[0];
 
 		$("#error").html("<div class='warning alert alert-info' role='alert'>Your file is uploading...</div>");

@@ -1,0 +1,90 @@
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/api.js"></script>
+<script src="js/archive.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css"></link>
+<link rel="stylesheet" href="css/style.css"></link>
+
+<title>Comfy Archives</title>
+
+<div id="header" class="page-header">
+	<input type="hidden" id="LOADED_PAGE" value="{{ PAGE_TAB }}"></input>
+	<h1>Comfy Archive</h1>
+	<ul class="nav nav-pills">
+		<li				   role="presentation"><a href="index.html">Home</a></li>
+		<li 			   role="presentation"><a href="browse.html">Browse</a></li>
+		<li 			   role="presentation"><a href="search.html">Search</a></li>
+		<li class="active" role="presentation"><a href="upload.html">Upload</a></li>
+		<li				   role="presentation"><a href="about.html">About</a></li>
+		<!-- <li id="search">
+			<form class="navbar-form navbar-left" action="search.html" method="post">
+				<input id="search-input" name="q" type="text" class="form-control" placeholder="Search the archive...">
+				<button id="search-button" type="submit" class="btn btn-default">Search</button>
+			</form>
+		</li> -->
+	</ul>
+</div>
+
+<h4><strong>Upload an image to the archive</strong></h4>
+
+<br>
+
+<input class="input-file" type="file" id="file" accept="image/gif, image/jpeg, image/png" onchange="loadPreview(this)"><br>
+<img id="preview" src=""></img>
+<input class="upload-form form-control" type="text" id="name" placeholder="Photo title"><br>
+<input class="upload-form form-control" type="text" id="uploader" placeholder="Uploader alias"><br>
+<input class="upload-form form-control" type="text" id="tags" placeholder="Tags (comma seperated)"><br>
+
+<div id="error"></div>
+
+<button class="btn btn-default" onclick="upload()">Upload</button>
+
+
+<style>
+#preview {
+	margin-bottom: 20px;
+}
+</style>
+
+<script>
+function loadPreview(input) {
+	if (input.files && input.files[0]) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#preview')
+					.attr("src", e.target.result)
+					.attr("width", 400);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+}
+
+function upload() {
+	var files = $("#file").prop("files");
+	if (files.length > 0) {
+		var title = $("#name").val();
+		var uploader = $("#uploader").val();
+		var tags = $("#tags").val().split(",");
+		var img = files[0];
+
+		$("#error").html("<div class='warning alert alert-info' role='alert'>Your file is uploading...</div>");
+
+		API.Images.Upload(title, uploader, tags, img, function(resp) {
+			if (resp.id != null) {
+				var url = API.Images.GetSourceUrl(resp.id);
+				$("#error").html(`<div class="warning alert alert-success" role="alert">File uploaded (<a href="${url}" target="__blank">link</a>)</div>`);
+			} else {
+				$("#error").html(`<div class="warning alert alert-danger" role="alert">An error occured uploading your file</div>`);
+			}
+		});
+	} else {
+
+		$("#error").html("<div class='warning alert alert-warning' role='alert'>No file selected</div>");
+
+	}
+}
+</script>

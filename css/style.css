@@ -1,0 +1,30 @@
+body {
+	margin: 20px;
+}
+
+#search {
+	float: right;
+}
+
+.image-thumbnail {
+	margin: 10px;
+}
+
+.upload-form {
+	width: 300px;
+}
+
+.tag {
+	margin-right: 2px;
+	margin-bottom: 5px;
+	text-decoration: none;
+}
+
+.upvote {
+	float: right;
+}
+
+.warning {
+	width: 300px;
+	padding: 10px;
+}

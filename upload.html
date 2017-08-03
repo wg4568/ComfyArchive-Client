@@ -75,7 +75,7 @@ function upload() {
 
 		API.Images.Upload(title, uploader, tags, img, function(resp) {
 			if (resp.id != null) {
-				var url = API.Images.GetSourceUrl(resp.id);
+				var url = "viewer.html?id=" + resp.id;
 				$("#error").html(`<div class="warning alert alert-success" role="alert">File uploaded (<a href="${url}" target="__blank">link</a>)</div>`);
 			} else {
 				$("#error").html(`<div class="warning alert alert-danger" role="alert">An error occured uploading your file</div>`);
